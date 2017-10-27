@@ -64,7 +64,8 @@ extends Component {
       cache: null,
       valueOnScreen: '',
       currentOperation: null,
-      staged: 0,
+      staged: '',
+      stagedOperation: '',
     };
   }
 
@@ -81,141 +82,124 @@ extends Component {
         </div>
       </div>
     );
-  }
+  } // render
 
   handleClick(type) {
+    const isOn = this.state.isOn;
+    var valueOnScreen = this.state.valueOnScreen;
+    var staged = this.state.staged;
+    var stagedOperation = this.state.stagedOperation;
+    var currentOperation = this.state.currentOperation;
 
     switch(type) {
+
       case 'ON':
+        valueOnScreen = isOn ? '' : '1';
+        currentOperation = null;
         this.setState({
-          isOn: !this.state.isOn,
-          valueOnScreen: !this.state.isOn ? '0' : '',
-          currentOperation: null,
-          staged: null,
+          valueOnScreen: valueOnScreen,
+          isOn: !isOn,
+          currentOperation,
         });
         break;
-      default:
+
+      case 'CLEAR':
+        valueOnScreen = '0';
+        staged = '0';
+        currentOperation = null;
+        this.setState({
+          valueOnScreen,
+          staged,
+          currentOperation,
+        });
         break;
-    }
 
-    const valueOnScreen = this.state.valueOnScreen;
-    const staged = this.state.staged;
-    const cache = this.state.cache;
-    const currentOperation = this.state.currentOperation;
-    console.log('valueOnScreen = ' + valueOnScreen);
-    console.log('cache = ' + cache);
-    console.log('currentOperation = ' + currentOperation);
+      case '+/-':
+        valueOnScreen = String(-1 * parseFloat(valueOnScreen));
+        staged = valueOnScreen;
+        this.setState({
+          valueOnScreen,
+          staged,
+        });
+        break;
 
-    if (this.state.isOn) {
-      switch (type) {
-        case 'ON':
-          this.setState({
-            isOn: !this.state.isOn,
-            valueOnScreen: !this.state.isOn ? '0' : '',
-            currentOperation: null,
-          });
-          break;
-        case 'CLEAR':
-          this.setState({
-            valueOnScreen: '0',
-            currentOperation: null,
-            staged: null,
-          });
-          break;
-        case '+/-':
-          this.setState({
-            valueOnScreen: String(parseFloat(this.state.valueOnScreen)*-1),
-          });
-          break;
-        case '%':
-          this.setState({
-            valueOnScreen: String(parseFloat(this.state.valueOnScreen)/100),
-          });
-          break;
-        case '/':
-          if (staged === null) {
-            this.setState({
-              staged: cache,
-              currentOperation: type,
-              valueOnScreen: cache,
-            });
-          } else {
-            const calculation = cache / valueOnScreen;
-            this.setState({
-              staged: calculation,
-              currentOperation: null,
-              valueOnScreen: calculation,
-            });
-          }
-          break;
-        case '+':
-          if (staged === null) {
-            this.setState({
-              staged: cache,
-              currentOperation: type,
-              valueOnScreen: cache,
-            });
-          } else {
-            const calculation = cache + valueOnScreen;
-            this.setState({
-              staged: calculation,
-              currentOperation: null,
-              valueOnScreen: calculation,
-            });
-          }
-          break;
-        case '*':
-          if (staged === null) {
-            this.setState({
-              staged: cache,
-              currentOperation: type,
-              valueOnScreen: cache,
-            });
-          } else {
-            const calculation = cache * valueOnScreen;
-            this.setState({
-              staged: calculation,
-              currentOperation: null,
-              valueOnScreen: calculation,
-            });
-          }
-          break;
-        case '-':
-          if (staged === null) {
-            this.setState({
-              staged: cache,
-              currentOperation: type,
-              valueOnScreen: cache,
-            });
-          } else {
-            const calculation = cache + valueOnScreen;
-            this.setState({
-              staged: calculation,
-              currentOperation: null,
-              valueOnScreen: calculation,
-            });
-          }
-          break;
+      case '%':
+        valueOnScreen = String(parseFloat(valueOnScreen)/100);
+        staged = valueOnScreen;
+        this.setState({
+          valueOnScreen,
+          staged,
+        });
+        break;
 
-        default:
-          var value;
-          if((!(/0\.[0-9]*/g).test(valueOnScreen) && !parseInt(valueOnScreen)) || currentOperation) {
-            value = type;
-            this.setState({
-              cache: value,
-              valueOnScreen: value,
-            });
-          } else {
-            value = this.state.valueOnScreen + type;
-            this.setState({
-              cache: value,
-              valueOnScreen: value,
-            });
-          }
-          break;
+      case '.':
+        if ( !(/\./g).test(valueOnScreen) ) {
+          valueOnScreen += '.';
+          this.setState({
+            valueOnScreen,
+          });
+        } // if valueOnScreen isnt already a decimal value
+        break;
+
+      case '+':
+        currentOperation = type;
+        this.setState({
+          currentOperation,
+          staged: valueOnScreen,
+        });
+        break;
+
+      case '-':
+        currentOperation = type;
+        this.setState({
+          currentOperation,
+          staged: valueOnScreen,
+        });
+        break;
+
+      case '*':
+        currentOperation = type;
+        this.setState({
+          currentOperation,
+          staged: valueOnScreen,
+        });
+        break;
+
+    case '/':
+      currentOperation = type;
+      this.setState({
+        currentOperation,
+        staged: valueOnScreen,
+      });
+      break;
+
+    case '=':
+      break;
+
+    default:
+      if (currentOperation) {
+        valueOnScreen = type;
+        this.setState({
+          valueOnScreen,
+          stagedOperation: currentOperation,
+        });
+        currentOperation = '';
+        break;
+      } // if there is a current operation selected and a number is being typed
+
+      if (valueOnScreen === '0') {
+        valueOnScreen = type;
+      } else {
+        valueOnScreen += type;
       }
-    }
-  }
+      this.setState({
+        valueOnScreen,
+      });
+      break;
+
+    } //switch
+
+  } // handleClick
 }
 
 
