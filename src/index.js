@@ -85,11 +85,6 @@ extends Component {
 
   handleClick(type) {
 
-    const valueOnScreen = this.state.valueOnScreen;
-    const staged = this.state.staged;
-    const cache = this.state.cache;
-    const currentOperation = this.state.currentOperation;
-
     switch(type) {
       case 'ON':
         this.setState({
@@ -103,90 +98,121 @@ extends Component {
         break;
     }
 
+    const valueOnScreen = this.state.valueOnScreen;
+    const staged = this.state.staged;
+    const cache = this.state.cache;
+    const currentOperation = this.state.currentOperation;
+    console.log('valueOnScreen = ' + valueOnScreen);
+    console.log('cache = ' + cache);
+    console.log('currentOperation = ' + currentOperation);
+
     if (this.state.isOn) {
       switch (type) {
-      case 'ON':
-        this.setState({
-          isOn: !this.state.isOn,
-          valueOnScreen: !this.state.isOn ? '0' : '',
-          currentOperation: null,
-        });
-        break;
-      case 'CLEAR':
-        this.setState({
-          valueOnScreen: '0',
-          currentOperation: null,
-          staged: null,
-        });
-        break;
-      case '+/-':
-        this.setState({
-          valueOnScreen: String(parseFloat(this.state.valueOnScreen)*-1),
-        });
-        break;
-      case '%':
-        this.setState({
-          valueOnScreen: String(parseFloat(this.state.valueOnScreen)/100),
-        });
-        break;
-      case '/':
-        if (staged === null) {
+        case 'ON':
           this.setState({
-            staged: cache,
-            currentOperation: type,
-            valueOnScreen: cache,
-          });
-        } else {
-          const calculation = cache / valueOnScreen;
-          this.setState({
-            staged: calculation,
+            isOn: !this.state.isOn,
+            valueOnScreen: !this.state.isOn ? '0' : '',
             currentOperation: null,
-            valueOnScreen: calculation,
           });
-        }
-        break;
-      case '*':
-        this.setState({
-          currentOperation: type,
-        });
-        break;
-      case '-':
-        this.setState({
-          currentOperation: type,
-        });
-        break;
-      case '+':
-        this.setState({
-          currentOperation: type,
-        });
-        break;
-      case '.':
-        if (this.state.valueOnScreen.split('').indexOf('.') < 0){
-          const valueOnScreen = this.state.valueOnScreen + '.';
+          break;
+        case 'CLEAR':
           this.setState({
-            valueOnScreen: valueOnScreen,
-            cache: valueOnScreen,
+            valueOnScreen: '0',
+            currentOperation: null,
+            staged: null,
           });
-        }
-        break;
-      case '=':
-        break;
-      default:
-        var value;
-        if((!(/0\.[0-9]*/g).test(valueOnScreen) && !parseInt(valueOnScreen)) || currentOperation) {
-          value = type;
+          break;
+        case '+/-':
           this.setState({
-            cache: value,
-            valueOnScreen: value,
+            valueOnScreen: String(parseFloat(this.state.valueOnScreen)*-1),
           });
-        } else {
-          value = this.state.valueOnScreen + type;
+          break;
+        case '%':
           this.setState({
-            cache: value,
-            valueOnScreen: value,
+            valueOnScreen: String(parseFloat(this.state.valueOnScreen)/100),
           });
-        }
-        break;
+          break;
+        case '/':
+          if (staged === null) {
+            this.setState({
+              staged: cache,
+              currentOperation: type,
+              valueOnScreen: cache,
+            });
+          } else {
+            const calculation = cache / valueOnScreen;
+            this.setState({
+              staged: calculation,
+              currentOperation: null,
+              valueOnScreen: calculation,
+            });
+          }
+          break;
+        case '+':
+          if (staged === null) {
+            this.setState({
+              staged: cache,
+              currentOperation: type,
+              valueOnScreen: cache,
+            });
+          } else {
+            const calculation = cache + valueOnScreen;
+            this.setState({
+              staged: calculation,
+              currentOperation: null,
+              valueOnScreen: calculation,
+            });
+          }
+          break;
+        case '*':
+          if (staged === null) {
+            this.setState({
+              staged: cache,
+              currentOperation: type,
+              valueOnScreen: cache,
+            });
+          } else {
+            const calculation = cache * valueOnScreen;
+            this.setState({
+              staged: calculation,
+              currentOperation: null,
+              valueOnScreen: calculation,
+            });
+          }
+          break;
+        case '-':
+          if (staged === null) {
+            this.setState({
+              staged: cache,
+              currentOperation: type,
+              valueOnScreen: cache,
+            });
+          } else {
+            const calculation = cache + valueOnScreen;
+            this.setState({
+              staged: calculation,
+              currentOperation: null,
+              valueOnScreen: calculation,
+            });
+          }
+          break;
+
+        default:
+          var value;
+          if((!(/0\.[0-9]*/g).test(valueOnScreen) && !parseInt(valueOnScreen)) || currentOperation) {
+            value = type;
+            this.setState({
+              cache: value,
+              valueOnScreen: value,
+            });
+          } else {
+            value = this.state.valueOnScreen + type;
+            this.setState({
+              cache: value,
+              valueOnScreen: value,
+            });
+          }
+          break;
       }
     }
   }
