@@ -115,11 +115,22 @@ extends Component {
   } // render
 
   handleClick(type) {
+
     const isOn = this.state.isOn;
     var valueOnScreen = this.state.valueOnScreen;
     var staged = this.state.staged;
     var stagedOperation = this.state.stagedOperation;
     var currentOperation = this.state.currentOperation;
+
+    if (!isOn && type !== 'ON'){
+      return;
+    }
+
+    else {
+      this.setState({
+        isOn: true,
+      });
+    }
 
     switch(type) {
 
@@ -167,12 +178,21 @@ extends Component {
         break;
 
       case '.':
-        if ( !(/\./g).test(valueOnScreen) ) {
-          valueOnScreen += '.';
+        if (currentOperation) {
+          valueOnScreen = '0.';
           this.setState({
-            valueOnScreen,
+            stagedOperation: currentOperation,
+            currentOperation: '',
           });
+        }
+
+        else if ( !(/\./g).test(valueOnScreen) ) {
+          valueOnScreen += '.';
         } // if valueOnScreen isnt already a decimal value
+
+        this.setState({
+          valueOnScreen,
+        });
         break;
 
       case '+':
@@ -212,74 +232,73 @@ extends Component {
         });
         break;
 
-    case '/':
-      if (stagedOperation) {
-        valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
-      }
-      currentOperation = type;
-      this.setState({
-        currentOperation,
-        staged: valueOnScreen,
-        valueOnScreen,
-      });
-      break;
-
-    case '=':
-      if (stagedOperation) {
-        valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
-        stagedOperation = '';
-        currentOperation = '';
-      }
-
-      else if (currentOperation) {
-        valueOnScreen = calculate(valueOnScreen, valueOnScreen, currentOperation);
-        currentOperation = '=';
-      }
-
-      staged = valueOnScreen;
-
-      this.setState({
-        currentOperation,
-        stagedOperation,
-        valueOnScreen,
-        staged,
-      });
-      break;
-
-    default:
-      if (currentOperation) {
-        valueOnScreen = type;
-
-        if (currentOperation !== '=') {
-          this.setState({
-            valueOnScreen,
-            stagedOperation: currentOperation,
-            currentOperation: ''
-          });
+      case '/':
+        if (stagedOperation) {
+          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
         }
-
-        else {
-          this.setState({
-            valueOnScreen,
-            currentOperation: '',
-            staged: '',
-          });
-        }
+        currentOperation = type;
+        this.setState({
+          currentOperation,
+          staged: valueOnScreen,
+          valueOnScreen,
+        });
         break;
-      } // if there is a current operation selected and a number is being typed.
 
-      if (valueOnScreen == '0') {
-        valueOnScreen = type;
-      } else {
-        valueOnScreen += type;
-      }
-      this.setState({
-        valueOnScreen,
-      });
-      break;
+      case '=':
+        if (stagedOperation) {
+          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          stagedOperation = '';
+          currentOperation = '';
+        }
 
-    } //switch
+        else if (currentOperation) {
+          valueOnScreen = calculate(valueOnScreen, valueOnScreen, currentOperation);
+          currentOperation = '=';
+        }
 
+        staged = valueOnScreen;
+
+        this.setState({
+          currentOperation,
+          stagedOperation,
+          valueOnScreen,
+          staged,
+        });
+        break;
+
+      default:
+        if (currentOperation) {
+          valueOnScreen = type;
+
+          if (currentOperation !== '=') {
+            this.setState({
+              valueOnScreen,
+              stagedOperation: currentOperation,
+              currentOperation: ''
+            });
+          }
+
+          else {
+            this.setState({
+              valueOnScreen,
+              currentOperation: '',
+              staged: '',
+            });
+          }
+          break;
+        } // if there is a current operation selected and a number is being typed.
+
+        if (valueOnScreen == '0') {
+          valueOnScreen = type;
+        } else {
+          valueOnScreen += type;
+        }
+        this.setState({
+          valueOnScreen,
+        });
+        break;
+
+      } //switch
   } // handleClick
 }
 
