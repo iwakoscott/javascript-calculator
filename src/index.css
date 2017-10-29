@@ -68,11 +68,9 @@ button:active {
   margin: 20px;
 }
 
-@media screen and (max-width: 275px) {
+@media screen and (min-width: 0px) and (max-width: 400px) {
   .calculator {
     width: 325px;
-    margin-top: 0px;
-    margin-bottom: 0px;
     height: 475px;
   }
 
