@@ -356,6 +356,7 @@ extends Component {
   } // handleClick
 }
 
+// this is a new feature
 
 ReactDOM.render(
   <Calculator />,
