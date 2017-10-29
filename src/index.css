@@ -67,3 +67,26 @@ button:active {
 .calc-row {
   margin: 20px;
 }
+
+@media screen and (min-width: 300px) {
+  .calculator {
+    width: 325px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 475px;
+  }
+
+  .calc-window {
+    width: 275px;
+  }
+
+  button {
+    border-radius: 10px;
+    margin: 8px;
+    box-shadow: 2px 4px 2px 3px grey;
+    font-size: 27px;
+    width: 55px;
+    outline: none;
+    font-family: 'Share Tech Mono', monospace;
+  }
+}
