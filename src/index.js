@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 
 function calculate(x, y, operation) {
   var returnValue = 0;
@@ -245,6 +246,7 @@ extends Component {
         break;
 
       case '=':
+
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
           stagedOperation = '';
@@ -253,17 +255,16 @@ extends Component {
 
         else if (currentOperation) {
           valueOnScreen = calculate(valueOnScreen, valueOnScreen, currentOperation);
-          currentOperation = '=';
+          stagedOperation = '';
+          currentOperation = '';
         }
-
-        staged = valueOnScreen;
 
         this.setState({
           currentOperation,
           stagedOperation,
           valueOnScreen,
-          staged,
         });
+
         break;
 
       default:
