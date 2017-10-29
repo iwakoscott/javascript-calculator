@@ -97,6 +97,7 @@ extends Component {
       currentOperation: null,
       staged: '',
       stagedOperation: '',
+      startNewCalc: false,
     };
   }
 
@@ -122,6 +123,7 @@ extends Component {
     var staged = this.state.staged;
     var stagedOperation = this.state.stagedOperation;
     var currentOperation = this.state.currentOperation;
+    var startNewCalc = this.state.startNewCalc;
 
     if (!isOn && type !== 'ON'){
       return;
@@ -144,6 +146,7 @@ extends Component {
           isOn: !isOn,
           currentOperation,
           stagedOperation,
+          startNewCalc: false,
         });
         break;
 
@@ -157,6 +160,7 @@ extends Component {
           staged,
           currentOperation,
           stagedOperation,
+          startNewCalc: false,
         });
         break;
 
@@ -179,11 +183,12 @@ extends Component {
         break;
 
       case '.':
-        if (currentOperation) {
+        if (currentOperation || startNewCalc) {
           valueOnScreen = '0.';
           this.setState({
             stagedOperation: currentOperation,
             currentOperation: '',
+            startNewCalc: false,
           });
         }
 
@@ -249,20 +254,20 @@ extends Component {
 
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
-          stagedOperation = '';
-          currentOperation = '';
         }
 
         else if (currentOperation) {
           valueOnScreen = calculate(valueOnScreen, valueOnScreen, currentOperation);
-          stagedOperation = '';
-          currentOperation = '';
         }
+
+        stagedOperation = '';
+        currentOperation = '';
 
         this.setState({
           currentOperation,
           stagedOperation,
           valueOnScreen,
+          startNewCalc: true,
         });
 
         break;
@@ -271,31 +276,30 @@ extends Component {
         if (currentOperation) {
           valueOnScreen = type;
 
-          if (currentOperation !== '=') {
-            this.setState({
-              valueOnScreen,
-              stagedOperation: currentOperation,
-              currentOperation: ''
-            });
-          }
+          this.setState({
+            valueOnScreen,
+            stagedOperation: currentOperation,
+            currentOperation: '',
+          });
 
-          else {
-            this.setState({
-              valueOnScreen,
-              currentOperation: '',
-              staged: '',
-            });
-          }
           break;
         } // if there is a current operation selected and a number is being typed.
 
         if (valueOnScreen == '0') {
           valueOnScreen = type;
-        } else {
+        }
+
+        else if (this.state.startNewCalc) {
+          valueOnScreen = type;
+          startNewCalc = false;
+        }
+
+        else {
           valueOnScreen += type;
         }
         this.setState({
           valueOnScreen,
+          startNewCalc,
         });
         break;
 
