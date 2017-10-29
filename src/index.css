@@ -1,18 +1,26 @@
 body {
   position: relative;
+  background-image: url('./paper.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 h1 {
-  color: black;
+  color: #00ea42;
   font-size: 40px;
+  opacity: .85;
+  font-family: 'Share Tech Mono', monospace;
 }
 
 button {
   border-radius: 10px;
-  margin: 5px;
-  box-shadow: 2px 1px grey;
+  margin: 6px;
+  box-shadow: 2px 4px 2px 3px grey;
   font-size: 40px;
   width: 75px;
+  outline: none;
+  font-family: 'Share Tech Mono', monospace;
 }
 
 button:active {
@@ -23,19 +31,23 @@ button:active {
 .calculator {
   position: absolute;
   width: 400px;
-  height: 500px;
+  height: 525px;
   border-style: double;
   top: 50%;
   left: 50%;
   margin: 100px 0 0 -200px;
   border-radius: 10px;
+  background-color: #efeadc;
+  box-shadow: 2px 4px 2px 3px grey;
 }
 
 .calc-window {
-  height: 50px;
-  width: 385px;
+  height: 60px;
+  width: 350px;
   border-style: solid;
-  margin: 5px;
+  margin: 20px;
+  background-color: #1c1d1e;
+  border-radius: 4px;
 }
 
 .on-screen {

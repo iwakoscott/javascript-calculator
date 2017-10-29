@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function clearance(value){
-  if (value.split('').length > 18) {
+  if (value.split('').length > 14) {
     console.log(value);
     alert('Digit limit met...');
     return '0';
@@ -159,7 +159,6 @@ extends Component {
           isOn: !isOn,
           currentOperation,
           stagedOperation,
-          startNewCalc: false,
         });
         break;
 
@@ -173,7 +172,6 @@ extends Component {
           staged,
           currentOperation,
           stagedOperation,
-          startNewCalc: false,
         });
         break;
 
@@ -191,18 +189,18 @@ extends Component {
         //staged = valueOnScreen;
         this.setState({
           valueOnScreen,
-          startNewCalc: true,
           //staged,
         });
         break;
 
       case '.':
         if (currentOperation || startNewCalc) {
+          startNewCalc = false;
           valueOnScreen = '0.';
           this.setState({
             stagedOperation: currentOperation,
             currentOperation: '',
-            startNewCalc: false,
+            startNewCalc,
           });
         }
 
@@ -216,21 +214,71 @@ extends Component {
         break;
 
       case '+':
-        break;
-
       case '-':
-        break;
-
-      case '*':
-        break;
-
       case '/':
+      case '*':
+
+        if (stagedOperation) {
+          staged = clearance(calculate(staged, valueOnScreen, stagedOperation));
+          currentOperation = type;
+          stagedOperation = '';
+          this.setState({
+            currentOperation,
+            staged,
+            stagedOperation,
+          });
+          break;
+        }
+
+        currentOperation = type;
+        staged = valueOnScreen;
+        this.setState({
+          currentOperation,
+          staged,
+        });
         break;
 
       case '=':
+        if (stagedOperation) {
+          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
+          stagedOperation = '';
+          staged = '';
+          this.setState({
+            valueOnScreen,
+            staged,
+            stagedOperation,
+            startNewCalc: true,
+          });
+        } // if stagedOperation
         break;
 
       default:
+
+        if (currentOperation || startNewCalc) {
+          startNewCalc = false;
+          stagedOperation = currentOperation;
+          currentOperation = '';
+          valueOnScreen = type;
+          this.setState({
+            stagedOperation,
+            currentOperation,
+            valueOnScreen,
+            startNewCalc,
+          });
+          break;
+        } // if we have selected an operation and then we click a number
+
+        if (valueOnScreen == '0') {
+          valueOnScreen = type;
+        } // if value on screen is zero
+        else {
+          valueOnScreen += type;
+        } // otherwise value on screen > 0
+
+        this.setState({
+          valueOnScreen,
+        });
+
         break;
       } //switch
   } // handleClick
