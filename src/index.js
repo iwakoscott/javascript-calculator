@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+function clearance(value){
+  if (value.split('').length > 18) {
+    console.log(value);
+    alert('Digit limit met...');
+    return '0';
+  } else {
+    return value;
+  }
+}
+
 function calculate(x, y, operation) {
   var returnValue = 0;
   x = parseFloat(x);
@@ -28,7 +38,7 @@ function calculate(x, y, operation) {
       returnValue = null;
       break;
   }
-  return returnValue;
+  return String(returnValue);
 }
 
 
@@ -99,6 +109,7 @@ extends Component {
       stagedOperation: '',
       startNewCalc: false,
     };
+
   }
 
   render() {
@@ -124,6 +135,8 @@ extends Component {
     var stagedOperation = this.state.stagedOperation;
     var currentOperation = this.state.currentOperation;
     var startNewCalc = this.state.startNewCalc;
+
+    valueOnScreen = clearance(valueOnScreen);
 
     if (!isOn && type !== 'ON'){
       return;
@@ -165,7 +178,7 @@ extends Component {
         break;
 
       case '+/-':
-        valueOnScreen = String(-1 * parseFloat(valueOnScreen));
+        valueOnScreen = clearance(String(-1 * parseFloat(valueOnScreen)));
         staged = valueOnScreen;
         this.setState({
           valueOnScreen,
@@ -174,7 +187,7 @@ extends Component {
         break;
 
       case '%':
-        valueOnScreen = String(parseFloat(valueOnScreen)/100);
+        valueOnScreen = clearance(String(parseFloat(valueOnScreen)/100));
         //staged = valueOnScreen;
         this.setState({
           valueOnScreen,
@@ -209,7 +222,7 @@ extends Component {
         }
 
         if (stagedOperation) {
-          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
           stagedOperation = '';
         }
 
@@ -229,7 +242,7 @@ extends Component {
         }
 
         if (stagedOperation) {
-          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
           stagedOperation = '';
         }
         currentOperation = type;
@@ -248,7 +261,7 @@ extends Component {
         }
 
         if (stagedOperation) {
-          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
           stagedOperation = '';
         }
         currentOperation = type;
@@ -268,7 +281,7 @@ extends Component {
         }
 
         if (stagedOperation) {
-          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
           stagedOperation = '';
         }
         currentOperation = type;
@@ -288,11 +301,11 @@ extends Component {
         }
 
         if (stagedOperation) {
-          valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
         }
 
         else if (currentOperation) {
-          valueOnScreen = calculate(valueOnScreen, valueOnScreen, currentOperation);
+          valueOnScreen = clearance(calculate(valueOnScreen, valueOnScreen, currentOperation));
         }
 
         stagedOperation = '';
