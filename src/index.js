@@ -50,8 +50,8 @@ extends Component {
   render() {
     return (
       <div className="buttons">
-        <div className="calc-row">
-          {this.renderButton('CLEAR')}
+        <div className="calc-row-main">
+          {this.renderButton('AC')}
           {this.renderButton('+/-')}
           {this.renderButton('/')}
           {this.renderButton('ON')}
@@ -105,7 +105,7 @@ extends Component {
     return (
       <div className="calculator">
         <div className="calc-window">
-          <h1>
+          <h1 className="on-screen">
             {this.state.valueOnScreen}
           </h1>
         </div>
@@ -150,7 +150,7 @@ extends Component {
         });
         break;
 
-      case 'CLEAR':
+      case 'AC':
         valueOnScreen = '0';
         staged = '0';
         currentOperation = '';
@@ -175,10 +175,11 @@ extends Component {
 
       case '%':
         valueOnScreen = String(parseFloat(valueOnScreen)/100);
-        staged = valueOnScreen;
+        //staged = valueOnScreen;
         this.setState({
           valueOnScreen,
-          staged,
+          startNewCalc: true,
+          //staged,
         });
         break;
 
@@ -202,8 +203,14 @@ extends Component {
         break;
 
       case '+':
+
+        if (startNewCalc) {
+          startNewCalc = false;
+        }
+
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          stagedOperation = '';
         }
 
         currentOperation = type;
@@ -211,46 +218,74 @@ extends Component {
           currentOperation,
           staged: valueOnScreen,
           valueOnScreen,
+          startNewCalc,
+          stagedOperation,
         });
         break;
 
       case '-':
+        if (startNewCalc) {
+          startNewCalc = false;
+        }
+
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          stagedOperation = '';
         }
         currentOperation = type;
         this.setState({
           currentOperation,
           staged: valueOnScreen,
           valueOnScreen,
+          startNewCalc,
+          stagedOperation,
         });
         break;
 
       case '*':
+        if (startNewCalc) {
+          startNewCalc = false;
+        }
+
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          stagedOperation = '';
         }
         currentOperation = type;
         this.setState({
           currentOperation,
           staged: valueOnScreen,
           valueOnScreen,
+          startNewCalc,
+          stagedOperation,
         });
         break;
 
       case '/':
+
+        if (startNewCalc) {
+          startNewCalc = false;
+        }
+
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
+          stagedOperation = '';
         }
         currentOperation = type;
         this.setState({
           currentOperation,
           staged: valueOnScreen,
           valueOnScreen,
+          startNewCalc,
+          stagedOperation,
         });
         break;
 
       case '=':
+
+        if (!staged) {
+          return;
+        }
 
         if (stagedOperation) {
           valueOnScreen = calculate(staged, valueOnScreen, stagedOperation);
@@ -289,7 +324,7 @@ extends Component {
           valueOnScreen = type;
         }
 
-        else if (this.state.startNewCalc) {
+        else if (startNewCalc) {
           valueOnScreen = type;
           startNewCalc = false;
         }
@@ -297,12 +332,13 @@ extends Component {
         else {
           valueOnScreen += type;
         }
+
         this.setState({
           valueOnScreen,
           startNewCalc,
         });
-        break;
 
+        break;
       } //switch
   } // handleClick
 }
