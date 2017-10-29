@@ -216,147 +216,25 @@ extends Component {
         break;
 
       case '+':
-
-        if (startNewCalc) {
-          startNewCalc = false;
-        }
-
-        if (stagedOperation) {
-          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
-          stagedOperation = '';
-        }
-
-        currentOperation = type;
-        this.setState({
-          currentOperation,
-          staged: valueOnScreen,
-          valueOnScreen,
-          startNewCalc,
-          stagedOperation,
-        });
         break;
 
       case '-':
-        if (startNewCalc) {
-          startNewCalc = false;
-        }
-
-        if (stagedOperation) {
-          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
-          stagedOperation = '';
-        }
-        currentOperation = type;
-        this.setState({
-          currentOperation,
-          staged: valueOnScreen,
-          valueOnScreen,
-          startNewCalc,
-          stagedOperation,
-        });
         break;
 
       case '*':
-        if (startNewCalc) {
-          startNewCalc = false;
-        }
-
-        if (stagedOperation) {
-          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
-          stagedOperation = '';
-        }
-        currentOperation = type;
-        this.setState({
-          currentOperation,
-          staged: valueOnScreen,
-          valueOnScreen,
-          startNewCalc,
-          stagedOperation,
-        });
         break;
 
       case '/':
-
-        if (startNewCalc) {
-          startNewCalc = false;
-        }
-
-        if (stagedOperation) {
-          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
-          stagedOperation = '';
-        }
-        currentOperation = type;
-        this.setState({
-          currentOperation,
-          staged: valueOnScreen,
-          valueOnScreen,
-          startNewCalc,
-          stagedOperation,
-        });
         break;
 
       case '=':
-
-        if (!staged) {
-          return;
-        }
-
-        if (stagedOperation) {
-          valueOnScreen = clearance(calculate(staged, valueOnScreen, stagedOperation));
-        }
-
-        else if (currentOperation) {
-          valueOnScreen = clearance(calculate(valueOnScreen, valueOnScreen, currentOperation));
-        }
-
-        stagedOperation = '';
-        currentOperation = '';
-
-        this.setState({
-          currentOperation,
-          stagedOperation,
-          valueOnScreen,
-          startNewCalc: true,
-        });
-
         break;
 
       default:
-        if (currentOperation) {
-          valueOnScreen = type;
-
-          this.setState({
-            valueOnScreen,
-            stagedOperation: currentOperation,
-            currentOperation: '',
-          });
-
-          break;
-        } // if there is a current operation selected and a number is being typed.
-
-        if (valueOnScreen == '0') {
-          valueOnScreen = type;
-        }
-
-        else if (startNewCalc) {
-          valueOnScreen = type;
-          startNewCalc = false;
-        }
-
-        else {
-          valueOnScreen += type;
-        }
-
-        this.setState({
-          valueOnScreen,
-          startNewCalc,
-        });
-
         break;
       } //switch
   } // handleClick
 }
-
-// this is a new feature
 
 ReactDOM.render(
   <Calculator />,
