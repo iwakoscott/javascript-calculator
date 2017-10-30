@@ -16,7 +16,7 @@ h1 {
 button {
   border-radius: 10px;
   margin: 6px;
-  box-shadow: 2px 4px 2px 3px grey;
+  box-shadow: 1px 5px 3px 2px grey;
   font-size: 40px;
   width: 75px;
   outline: none;
