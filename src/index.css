@@ -73,12 +73,15 @@ button:active {
 
   .calculator {
     width: 310px;
-    height: 475px;
+    height: 430px;
     margin: 100px 0 0 -165px;
   }
 
   .calc-window {
-    width: 275px;
+    width: 295px;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 
   button {
