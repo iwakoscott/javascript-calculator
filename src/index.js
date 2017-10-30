@@ -7,7 +7,7 @@ function clearance(value){
 
   if (valueAsArr.length > 14) {
     if (valueAsArr.indexOf('.') > 0) {
-      return parseFloat(value).toFixed(13);
+      return parseFloat(value).toFixed(2);
     }
     else {
       return valueAsArr.slice(0, 15).join('');
