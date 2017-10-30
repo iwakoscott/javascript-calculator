@@ -48,6 +48,7 @@ button:active {
   margin: 20px;
   background-color: #1c1d1e;
   border-radius: 4px;
+  box-shadow: 1px 4px 1px 1px grey;
 }
 
 .on-screen {
@@ -69,12 +70,11 @@ button:active {
 }
 
 @media screen and (min-width: 0px) and (max-width: 425px) {
+
   .calculator {
-    width: 325px;
+    width: 310px;
     height: 475px;
-    margin: 0;
-    top: 70px;
-    left: 30px;
+    margin: 100px 0 0 -165px;
   }
 
   .calc-window {
@@ -83,9 +83,9 @@ button:active {
 
   button {
     border-radius: 10px;
-    margin: 8px;
+    margin: 5px;
     box-shadow: 2px 4px 2px 3px grey;
-    font-size: 27px;
+    font-size: 25px;
     width: 55px;
     outline: none;
     font-family: 'Share Tech Mono', monospace;
