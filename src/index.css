@@ -78,9 +78,9 @@ button:active {
   }
 
   .calc-window {
-    width: 295px;
+    width: 285px;
     margin-top: 10px;
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 5px;
   }
 
@@ -92,5 +92,9 @@ button:active {
     width: 55px;
     outline: none;
     font-family: 'Share Tech Mono', monospace;
+  }
+
+  h1 {
+    font-size: 32px;
   }
 }

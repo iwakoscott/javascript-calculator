@@ -3,11 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function clearance(value){
-  if (value.split('').length > 14) {
-    console.log(value);
-    alert('Digit limit met...');
-    return '0';
-  } else {
+  var valueAsArr = value.split('');
+
+  if (valueAsArr.length > 14) {
+    if (valueAsArr.indexOf('.') > 0) {
+      return parseFloat(value).toFixed(13);
+    }
+    else {
+      return valueAsArr.slice(0, 15).join('');
+    }
+  }
+
+  else {
     return value;
   }
 }
