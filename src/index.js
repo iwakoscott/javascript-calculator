@@ -36,7 +36,7 @@ function clearance(value){
 function calculate(x, y, operation) {
   var returnValue = 0;
   x = parseFloat(x);
-  y = parseFloat(y);
+  y = y ? parseFloat(y) : null;
   switch (operation) {
 
     case '+':
@@ -53,6 +53,14 @@ function calculate(x, y, operation) {
 
     case '/':
       returnValue = y === 0 ? NaN : x / y;
+      break;
+
+    case '%':
+      returnValue = x / 100;
+      break;
+
+    case '+/-':
+      returnValue = x * -1;
       break;
 
     default:
@@ -197,7 +205,13 @@ extends Component {
         break;
 
       case '+/-':
-        valueOnScreen = clearance(String(-1 * parseFloat(valueOnScreen)));
+        valueOnScreen = clearance(calculate(valueOnScreen, null, type));
+        if (staged) {
+          this.setState({
+            valueOnScreen,
+          });
+          break;
+        }
         staged = valueOnScreen;
         this.setState({
           valueOnScreen,
@@ -206,7 +220,7 @@ extends Component {
         break;
 
       case '%':
-        valueOnScreen = clearance(String(parseFloat(valueOnScreen)/100));
+        valueOnScreen = clearance(calculate(valueOnScreen, null, type));
         //staged = valueOnScreen;
         this.setState({
           valueOnScreen,
