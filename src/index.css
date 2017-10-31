@@ -32,7 +32,7 @@ button:active {
 .calculator {
   position: absolute;
   width: 400px;
-  height: 525px;
+  height: 535px;
   border-style: double;
   top: 50%;
   left: 50%;

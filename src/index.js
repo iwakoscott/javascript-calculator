@@ -5,7 +5,6 @@ import './index.css';
 function clearance(value){
   // in: String
   // out: String
-  var isNeg = parseFloat(value) < 0;
   var valueAsArr = value.split('');
   var decimalLoc = valueAsArr.indexOf('.');
   var hasDecimal =  decimalLoc > 0 ? true : false;
@@ -16,8 +15,11 @@ function clearance(value){
   } // value does not have decimal
 
   else {
+    if (value.indexOf('e') > 0 && inputLength > 15) {
+      alert('DIGIT LIMIT REACHED.')
+      return '0';
+    }
     var front = value.slice(0, decimalLoc);
-
     if (front.length + 1 > 16) {
       alert('DIGIT LIMIT REACHED.');
       return '0';
@@ -287,7 +289,7 @@ extends Component {
           break;
         } // if we have selected an operation and then we click a number
 
-        if (valueOnScreen.length < 15) {
+        if (valueOnScreen.length < 14) {
           if (valueOnScreen == '0') {
             valueOnScreen = type;
           } // if value on screen is zero
