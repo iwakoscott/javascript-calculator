@@ -3,20 +3,32 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function clearance(value){
+  // in: String
+  // out: String
+  var isNeg = parseFloat(value) < 0;
   var valueAsArr = value.split('');
+  var decimalLoc = valueAsArr.indexOf('.');
+  var hasDecimal =  decimalLoc > 0 ? true : false;
+  var inputLength = hasDecimal ? valueAsArr.length - 1 : valueAsArr.length;
 
-  if (valueAsArr.length > 14) {
-    if (valueAsArr.indexOf('.') > 0) {
-      return parseFloat(value).toFixed(2);
-    }
-    else {
-      return valueAsArr.slice(0, 15).join('');
-    }
-  }
+  if (!hasDecimal) {
+    return value.slice(0, 16);
+  } // value does not have decimal
 
   else {
-    return value;
-  }
+    var front = value.slice(0, decimalLoc);
+
+    if (front.length + 1 > 16) {
+      alert('DIGIT LIMIT REACHED.');
+      return '0';
+    } // if the front is larger than the screen allowance then digit limit met.
+
+    var trimmed = front;
+    var back = value.slice(decimalLoc + 1, value.length);
+    console.log("front = " + front);
+    console.log("back = " + back);
+    return trimmed + '.' + back.slice(0, 16 - (trimmed.length + 1));
+  } // value does NOT have decimal
 }
 
 function calculate(x, y, operation) {
@@ -275,16 +287,18 @@ extends Component {
           break;
         } // if we have selected an operation and then we click a number
 
-        if (valueOnScreen == '0') {
-          valueOnScreen = type;
-        } // if value on screen is zero
-        else {
-          valueOnScreen += type;
-        } // otherwise value on screen > 0
+        if (valueOnScreen.length < 15) {
+          if (valueOnScreen == '0') {
+            valueOnScreen = type;
+          } // if value on screen is zero
+          else {
+            valueOnScreen += type;
+          } // otherwise value on screen > 0
 
-        this.setState({
-          valueOnScreen,
-        });
+          this.setState({
+            valueOnScreen,
+          });
+        }
 
         break;
       } //switch

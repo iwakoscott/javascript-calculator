@@ -8,7 +8,7 @@ body {
 
 h1 {
   color: #00ea42;
-  font-size: 40px;
+  font-size: 38px;
   opacity: .85;
   font-family: 'Share Tech Mono', monospace;
 }
@@ -16,11 +16,12 @@ h1 {
 button {
   border-radius: 10px;
   margin: 6px;
-  box-shadow: 1px 5px 3px 2px grey;
+  box-shadow: 2px 4px 3px 3px grey;
   font-size: 40px;
   width: 75px;
   outline: none;
   font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
 }
 
 button:active {
@@ -38,12 +39,12 @@ button:active {
   margin: 100px 0 0 -200px;
   border-radius: 10px;
   background-color: #efeadc;
-  box-shadow: 2px 4px 2px 3px grey;
+  box-shadow: 4px 4px 5px 3px grey;
 }
 
 .calc-window {
   height: 60px;
-  width: 350px;
+  width: 355px;
   border-style: solid;
   margin: 20px;
   background-color: #1c1d1e;
